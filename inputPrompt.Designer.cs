@@ -1,6 +1,6 @@
 ﻿namespace BrainfuckInterpret
 {
-    partial class inputPrompt
+    partial class InputPrompt
     {
         /// <summary>
         /// Required designer variable.

@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace BrainfuckInterpret
 {
-    public partial class inputPrompt : Form
+    public partial class InputPrompt : Form
     {
-        public inputPrompt()
+        public InputPrompt()
         {
             InitializeComponent();
         }
@@ -25,18 +25,18 @@ namespace BrainfuckInterpret
                 {
                     if (textBox1.Text == string.Empty)
                     {
-                        Form1.PromptValue = 0;
+                        Interpreter.PromptValue = 0;
                     }
                     else
                     {
-                        Form1.PromptValue = textBox1.Text[0];
+                        Interpreter.PromptValue = textBox1.Text[0];
                     }
                 }
                 else
                 {
                     if (char.IsDigit(textBox1.Text[0]))
                     {
-                        Form1.PromptValue = Convert.ToInt32(textBox1.Text[0].ToString());
+                        Interpreter.PromptValue = Convert.ToInt32(textBox1.Text[0].ToString());
                     }
                 }
                 this.Close();

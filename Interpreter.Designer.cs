@@ -1,6 +1,6 @@
 ﻿namespace BrainfuckInterpret
 {
-    partial class Form1
+    partial class Interpreter
     {
         /// <summary>
         /// Required designer variable.

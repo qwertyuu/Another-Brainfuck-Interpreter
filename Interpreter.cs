@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace BrainfuckInterpret
 {
-    public partial class Form1 : Form
+    public partial class Interpreter : Form
     {
-        public Form1()
+        public Interpreter()
         {
             InitializeComponent();
         }
@@ -113,7 +113,7 @@ namespace BrainfuckInterpret
                         AppendChar(outputs, (char)buffer[pointer]);
                         break;
                     case ',':
-                        new inputPrompt().ShowDialog();
+                        new InputPrompt().ShowDialog();
                         buffer[pointer] = PromptValue;
                         break;
                     case '[':
