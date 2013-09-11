@@ -16,7 +16,6 @@ namespace BrainfuckInterpret
         {
             InitializeComponent();
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             t = new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(DoEet));
