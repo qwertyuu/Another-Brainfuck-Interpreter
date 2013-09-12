@@ -14,7 +14,7 @@ C:\Users\etu420\Documents\Visual Studio 2012\Projects\BrainfuckInterpret\Brainfu
 C:\Users\etu420\Documents\Visual Studio 2012\Projects\BrainfuckInterpret\BrainfuckInterpret\bin\Debug\BrainfuckInterpret.exe
 C:\Users\etu420\Documents\Visual Studio 2012\Projects\BrainfuckInterpret\BrainfuckInterpret\bin\Debug\BrainfuckInterpret.pdb
 C:\Users\etu420\Documents\Visual Studio 2012\Projects\BrainfuckInterpret\BrainfuckInterpret\obj\Debug\BrainfuckInterpret.csprojResolveAssemblyReference.cache
-C:\Users\etu420\Documents\Visual Studio 2012\Projects\BrainfuckInterpret\BrainfuckInterpret\obj\Debug\BrainfuckInterpret.Form1.resources
 C:\Users\etu420\Documents\Visual Studio 2012\Projects\BrainfuckInterpret\BrainfuckInterpret\obj\Debug\BrainfuckInterpret.inputPrompt.resources
 C:\Users\etu420\Documents\Visual Studio 2012\Projects\BrainfuckInterpret\BrainfuckInterpret\obj\Debug\BrainfuckInterpret.Properties.Resources.resources
 C:\Users\etu420\Documents\Visual Studio 2012\Projects\BrainfuckInterpret\BrainfuckInterpret\obj\Debug\BrainfuckInterpret.csproj.GenerateResource.Cache
+C:\Users\etu420\Documents\Visual Studio 2012\Projects\BrainfuckInterpret\BrainfuckInterpret\obj\Debug\BrainfuckInterpret.Interpreter.resources

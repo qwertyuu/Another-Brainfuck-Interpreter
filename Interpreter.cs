@@ -48,6 +48,7 @@ namespace BrainfuckInterpret
                 }
             }
         }
+        char lastChar;
         object swag = new object();
         static Stack<int> state;
         static Dictionary<int, int> endValues;
@@ -189,16 +190,44 @@ namespace BrainfuckInterpret
                 switch (j)
                 {
                     case '+':
-                        a.Append(j);
+                        if (lastChar == '-')
+                        {
+                            Remove(a);
+                        }
+                        else
+                        {
+                            a.Append(j);
+                        }
                         break;
                     case '-':
-                        a.Append(j);
+                        if (lastChar == '+')
+                        {
+                            Remove(a);
+                        }
+                        else
+                        {
+                            a.Append(j);
+                        }
                         break;
                     case '>':
-                        a.Append(j);
+                        if (lastChar == '<')
+                        {
+                            Remove(a);
+                        }
+                        else
+                        {
+                            a.Append(j);
+                        }
                         break;
                     case '<':
-                        a.Append(j);
+                        if (lastChar == '>')
+                        {
+                            Remove(a);
+                        }
+                        else
+                        {
+                            a.Append(j);
+                        }
                         break;
                     case '[':
                         a.Append(j);
@@ -215,8 +244,14 @@ namespace BrainfuckInterpret
                     default:
                         break;
                 }
+                lastChar = (a.Length > 0) ? a[a.Length - 1] : (char)0;
             }
             input.Text = a.ToString();
+        }
+
+        private void Remove(StringBuilder a)
+        {
+            a.Remove(a.Length - 1, 1);
         }
     }
 }
