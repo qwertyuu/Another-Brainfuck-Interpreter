@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BrainfuckInterpret
@@ -18,164 +13,160 @@ namespace BrainfuckInterpret
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            t = new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(DoEet));
-            outputs = new StringBuilder();
-            endValues = new Dictionary<int, int>();
-            state = new Stack<int>();
-            timer = new Timer();
-            timer.Tick += timer_Tick;
-            done = false;
-            isSeekingEndOfLoop = false;
-            inputs = input.Text;
+            _t = new System.Threading.Thread(DoEet);
+            _outputs = new StringBuilder();
+            _endValues = new Dictionary<int, int>();
+            _state = new Stack<int>();
+            _timer = new Timer();
+            _timer.Tick += timer_Tick;
+            _done = false;
+            _isSeekingEndOfLoop = false;
+            _inputs = input.Text;
             output.Text = string.Empty;
-            t.IsBackground = true;
-            t.Start();
-            timer.Interval = 10;
-            timer.Start();
+            _t.IsBackground = true;
+            _t.Start();
+            _timer.Interval = 10;
+            _timer.Start();
         }
 
         void timer_Tick(object sender, EventArgs e)
         {
-            lock (swag)
+            lock (_swag)
             {
-                if (done && output.Text == outputs.ToString())
+                if (_done && output.Text == _outputs.ToString())
                 {
-                    timer.Stop();
+                    _timer.Stop();
                 }
                 else
                 {
-                    output.Text = outputs.ToString();
+                    output.Text = _outputs.ToString();
                 }
             }
         }
-        char lastChar;
-        object swag = new object();
-        static Stack<int> state;
-        static Dictionary<int, int> endValues;
-        static int[] buffer;
-        static string inputs;
-        StringBuilder outputs;
-        static int pointer;
-        Timer timer;
-        System.Threading.Thread t;
+        char _lastChar;
+        readonly object _swag = new object();
+        static Stack<int> _state;
+        static Dictionary<int, int> _endValues;
+        static int[] _buffer;
+        static string _inputs;
+        StringBuilder _outputs;
+        static int _pointer;
+        Timer _timer;
+        System.Threading.Thread _t;
 
         private void DoEet(object obj)
         {
-            buffer = new int[256];
-            pointer = 0;
-            i = 0;
-            while (i < inputs.Length)
+            _buffer = new int[256];
+            _pointer = 0;
+            _i = 0;
+            while (_i < _inputs.Length)
             {
                 Think();
-                i++;
+                _i++;
             }
-            done = true;
+            _done = true;
         }
-        bool done;
-        static int layer = 0;
-        static int i;
-        static bool isSeekingEndOfLoop;
+        bool _done;
+        static int _layer;
+        static int _i;
+        static bool _isSeekingEndOfLoop;
 
         private void Think()
         {
-            if (!isSeekingEndOfLoop)
+            if (!_isSeekingEndOfLoop)
             {
-                switch (inputs[i])
+                switch (_inputs[_i])
                 {
                     case '>':
-                        pointer++;
-                        if (pointer > 255)
+                        _pointer++;
+                        if (_pointer > 255)
                         {
-                            pointer = 0;
+                            _pointer = 0;
                         }
                         break;
                     case '<':
-                        pointer--;
-                        if (pointer < 0)
+                        _pointer--;
+                        if (_pointer < 0)
                         {
-                            pointer = 255;
+                            _pointer = 255;
                         }
                         break;
                     case '+':
-                        buffer[pointer]++;
-                        if (buffer[pointer] > 255)
+                        _buffer[_pointer]++;
+                        if (_buffer[_pointer] > 255)
                         {
-                            buffer[pointer] = 0;
+                            _buffer[_pointer] = 0;
                         }
                         break;
                     case '-':
-                        buffer[pointer]--;
-                        if (buffer[pointer] < 0)
+                        _buffer[_pointer]--;
+                        if (_buffer[_pointer] < 0)
                         {
-                            buffer[pointer] = 255;
+                            _buffer[_pointer] = 255;
                         }
                         break;
                     case '.':
-                        AppendChar(outputs, (char)buffer[pointer]);
+                        AppendChar(_outputs, (char)_buffer[_pointer]);
                         break;
                     case ',':
                         new InputPrompt().ShowDialog();
-                        buffer[pointer] = PromptValue;
+                        _buffer[_pointer] = PromptValue;
                         break;
                     case '[':
-                        if (buffer[pointer] == 0)
+                        if (_buffer[_pointer] == 0)
                         {
-                            if (!endValues.ContainsKey(i - 1))
+                            if (!_endValues.ContainsKey(_i - 1))
                             {
-                                isSeekingEndOfLoop = true;
-                                state.Push(i - 1);
+                                _isSeekingEndOfLoop = true;
+                                _state.Push(_i - 1);
                             }
                             else
                             {
-                                i = endValues[i - 1];
+                                _i = _endValues[_i - 1];
                             }
                         }
                         else
                         {
-                            state.Push(i - 1);
+                            _state.Push(_i - 1);
                         }
                         break;
                     case ']':
-                        int buf = state.Pop();
-                        if (!endValues.ContainsKey(buf))
+                        int buf = _state.Pop();
+                        if (!_endValues.ContainsKey(buf))
                         {
-                            endValues.Add(buf, i);
+                            _endValues.Add(buf, _i);
                         }
-                        i = buf;
+                        _i = buf;
                         break;
                     case '#':
-                        break;
-                    default:
                         break;
                 }
             }
             else
             {
-                switch (inputs[i])
+                switch (_inputs[_i])
                 {
                     case '[':
-                        layer++;
+                        _layer++;
                         break;
                     case ']':
-                        if (layer > 0)
+                        if (_layer > 0)
                         {
-                            layer--;
+                            _layer--;
                         }
                         else
                         {
-                            int buf = state.Pop();
-                            endValues.Add(buf, i);
-                            isSeekingEndOfLoop = false;
+                            int buf = _state.Pop();
+                            _endValues.Add(buf, _i);
+                            _isSeekingEndOfLoop = false;
                         }
-                        break;
-                    default:
                         break;
                 }
             }
         }
         public void AppendChar(StringBuilder sB, char c)
         {
-            lock (swag)
+            lock (_swag)
             {
                 sB.Append(c);
             }
@@ -184,13 +175,13 @@ namespace BrainfuckInterpret
 
         private void button2_Click(object sender, EventArgs e)
         {
-            StringBuilder a = new StringBuilder();
+            var a = new StringBuilder();
             foreach (char j in input.Text)
             {
                 switch (j)
                 {
                     case '+':
-                        if (lastChar == '-')
+                        if (_lastChar == '-')
                         {
                             Remove(a);
                         }
@@ -200,7 +191,7 @@ namespace BrainfuckInterpret
                         }
                         break;
                     case '-':
-                        if (lastChar == '+')
+                        if (_lastChar == '+')
                         {
                             Remove(a);
                         }
@@ -210,7 +201,7 @@ namespace BrainfuckInterpret
                         }
                         break;
                     case '>':
-                        if (lastChar == '<')
+                        if (_lastChar == '<')
                         {
                             Remove(a);
                         }
@@ -220,7 +211,7 @@ namespace BrainfuckInterpret
                         }
                         break;
                     case '<':
-                        if (lastChar == '>')
+                        if (_lastChar == '>')
                         {
                             Remove(a);
                         }
@@ -241,10 +232,8 @@ namespace BrainfuckInterpret
                     case ',':
                         a.Append(j);
                         break;
-                    default:
-                        break;
                 }
-                lastChar = (a.Length > 0) ? a[a.Length - 1] : (char)0;
+                _lastChar = (a.Length > 0) ? a[a.Length - 1] : (char)0;
             }
             input.Text = a.ToString();
         }
